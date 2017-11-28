@@ -16,18 +16,20 @@ class TwoOfTwo:
 
     def __init__(self, mnemonic, seed, nlocktime_file):
         logging.info('Reading nlocktime transactions from {}'.format(nlocktime_file))
-        self.compressed_zip = open(nlocktime_file, "rb").read()
+#        self.compressed_zip = open(nlocktime_file, "rb").read()
 
         self.mnemonic = mnemonic
         self.seed = seed
         self.wallet = bip32_key_from_seed(self.seed, BIP32_VER_MAIN_PRIVATE, BIP32_FLAG_SKIP_HASH)
         chaincode = bip32_key_get_chain_code(self.wallet)
 
-        zipdata = gacommon._unzip(self.compressed_zip, chaincode)
+#        zipdata = gacommon._unzip(self.compressed_zip, chaincode)
+        zipdata = open(nlocktime_file, "rb").read()
         if len(zipdata) == 0:
             raise exceptions.GARecoveryError(
                 'The nlocktimes file "{}" contains no transactions'.format(nlocktime_file))
-        self.txdata = [json.loads(txdata.decode("ascii")) for txdata in zipdata]
+#        self.txdata = [json.loads(txdata.decode("ascii")) for txdata in zipdata]
+        self.txdata = json.loads(zipdata)
 
         self.is_testnet = self._is_testnet()
 

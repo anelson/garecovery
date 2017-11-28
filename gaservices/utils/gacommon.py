@@ -111,6 +111,7 @@ def sign(txdata, signatories, args): # BCASH
                          "pointer": txdata['prevout_pointers'][prevout_index] })
             satoshi += inp[-1]["value"]
 
+        del tx.txs_out[1]
         assert len(tx.txs_out) == 1
         tx.txs_out[0].script = pycoin.ui.script_obj_from_address(args.destination_address).script()
 
